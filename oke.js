@@ -46,11 +46,6 @@ function findBookIndex(bookId) {
 }
 
 
-/**
- * Fungsi ini digunakan untuk memeriksa apakah localStorage didukung oleh browser atau tidak
- *
- * @returns boolean
- */
 function isStorageExist() /* boolean */ {
   if (typeof (Storage) === undefined) {
     alert('Browser kamu tidak mendukung local storage');
@@ -59,10 +54,7 @@ function isStorageExist() /* boolean */ {
   return true;
 }
 
-/**
- * Fungsi ini digunakan untuk menyimpan data ke localStorage
- * berdasarkan KEY yang sudah ditetapkan sebelumnya.
- */
+
 function saveData() {
   if (isStorageExist()) {
     const parsed /* string */ = JSON.stringify(books);
@@ -71,10 +63,6 @@ function saveData() {
   }
 }
 
-/**
- * Fungsi ini digunakan untuk memuat data dari localStorage
- * Dan memasukkan data hasil parsing ke variabel {@see todos}
- */
 function loadDataFromStorage() {
   const serializedData /* string */ = localStorage.getItem(STORAGE_KEY);
   let data = JSON.parse(serializedData);
