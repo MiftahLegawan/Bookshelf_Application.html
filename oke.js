@@ -46,6 +46,11 @@ function findBookIndex(bookId) {
 }
 
 
+/**
+ * Fungsi ini digunakan untuk memeriksa apakah localStorage didukung oleh browser atau tidak
+ *
+ * @returns boolean
+ */
 function isStorageExist() /* boolean */ {
   if (typeof (Storage) === undefined) {
     alert('Browser kamu tidak mendukung local storage');
@@ -54,7 +59,10 @@ function isStorageExist() /* boolean */ {
   return true;
 }
 
-
+/**
+ * Fungsi ini digunakan untuk menyimpan data ke localStorage
+ * berdasarkan KEY yang sudah ditetapkan sebelumnya.
+ */
 function saveData() {
   if (isStorageExist()) {
     const parsed /* string */ = JSON.stringify(books);
@@ -63,6 +71,10 @@ function saveData() {
   }
 }
 
+/**
+ * Fungsi ini digunakan untuk memuat data dari localStorage
+ * Dan memasukkan data hasil parsing ke variabel {@see todos}
+ */
 function loadDataFromStorage() {
   const serializedData /* string */ = localStorage.getItem(STORAGE_KEY);
   let data = JSON.parse(serializedData);
@@ -99,13 +111,27 @@ function makeBook(bookObject) {
   container.setAttribute('id', `book-${id}`);
 
   if (isCompleted) {
-    const greenButton = document.createElement('button');
-    greenButton.classList.add('green');
-    greenButton.textContent = 'Selesai di Baca';
-    greenButton.addEventListener('click', function () {
+    const ijoButton = document.createElement('button');
+    ijoButton.classList.add('green');
+    ijoButton.textContent = 'Belum selesai di baca'
+    ijoButton.addEventListener('click', function () {
+      moveBookToUncompletedBookList(id);
+    });
+    const redButton = document.createElement('button');
+    redButton.classList.add('red');
+    redButton.textContent = 'Hapus Buku';
+    redButton.addEventListener('click', function () {
+      removeBookFromCompleted(id);
+    });
+    container.append(ijoButton, redButton);
+  } else {
+
+    const hijauButton = document.createElement('button');
+    hijauButton.classList.add('green');
+    hijauButton.textContent = 'Sudah selesai di baca'
+    hijauButton.addEventListener('click', function () {
       moveBookToListCompleted(id);
     });
-
     const redButton = document.createElement('button');
     redButton.classList.add('red');
     redButton.textContent = 'Hapus Buku';
@@ -113,17 +139,7 @@ function makeBook(bookObject) {
       removeBookFromCompleted(id);
     });
 
-    container.append(greenButton, redButton);
-  } else {
-
-    const hijauButton = document.createElement('button');
-    hijauButton.classList.add('green');
-    hijauButton.textContent = 'Belum selesai di baca'
-    hijauButton.addEventListener('click', function () {
-      moveBookToUncompletedBookList(id);
-    });
-
-    container.append(hijauButton);
+    container.append(hijauButton, redButton);
   }
 
   return container;
@@ -148,7 +164,9 @@ function moveBookToListCompleted(bookId /* HTMLELement */) {
   if (bookTarget == null) return;
 
   bookTarget.isCompleted = true;
-  listCompleted.append(bookTarget)
+    const listCompleted = document.getElementById('completeBookshelfList');
+    listCompleted.innerHTML = '';
+  listCompleted.append(bookTarget);
   document.dispatchEvent(new Event(RENDER_EVENT));
   saveData();
 }
@@ -169,6 +187,8 @@ function moveBookToUncompletedBookList(bookId /* HTMLELement */) {
   if (bookTarget == null) return;
 
   bookTarget.isCompleted = false;
+    const uncompletedBookList = document.getElementById('incompleteBookshelfList');
+    uncompletedBookList.innerHTML = '';
   uncompletedBookList.append(bookTarget);
   document.dispatchEvent(new Event(RENDER_EVENT));
   saveData();
@@ -210,3 +230,11 @@ document.addEventListener(RENDER_EVENT, function () {
   }
 })
 
+
+function search() {
+  let input, filter, ul, li, a, i, txtValue;
+  input = document.getElementById('searchBookTitle');
+  filter = input.value.toUpperCase();
+  for (i=0; i < serializedData.length; i++) {
+  }
+}
