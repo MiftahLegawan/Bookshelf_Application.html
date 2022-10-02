@@ -165,7 +165,25 @@ main {
     color: white;
 }
 
+
 .book_shelf > .book_list > .book_item > .action > .red {
     background-color: darkred;
     color: white;
 }
+
+.red{
+    background-color: brown;
+    border-color: rgb(87, 12, 12);
+    color:aliceblue;
+    margin-left: 20px;
+}
+.red, .green{
+    padding: 5px;
+    margin-bottom: 10px;
+}
+.green {
+    background-color: green;
+    border-color: rgb(0, 99, 0);
+    color: aliceblue;
+}
+
