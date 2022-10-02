@@ -1,13 +1,3 @@
-/**
- * [
- *    {
- *      id: <int>
- *      task: <string>
- *      timestamp: <string>
- *      isCompleted: <boolean>
- *    }
- * ]
- */
 const books = [];
 const RENDER_EVENT = 'render-book';
 const SAVED_EVENT = 'saved-book';
@@ -218,11 +208,11 @@ document.addEventListener(RENDER_EVENT, function () {
   }
 })
 
-const searchButton = document.getElementById('searchSubmit');
-searchButton.addEventListener('click', function (event) {
+const searchButton = document.getElementById('searchBook');
+searchButton.addEventListener('submit', function (event) {
   event.preventDefault();
   const searchBook = document.getElementById('searchBookTitle').value.toLowerCase();
-  const daftar = document.querySelectorAll('.book_item > h3');
+  const daftar = document.querySelectorAll('.inner > h2');
     for (book of daftar) {
   if (searchBook === book.innerText.toLowerCase()) {
     book.parentElement.style.display ='block';
