@@ -45,13 +45,7 @@ function findBookIndex(bookId) {
   return -1;
 }
 
-
-/**
- * Fungsi ini digunakan untuk memeriksa apakah localStorage didukung oleh browser atau tidak
- *
- * @returns boolean
- */
-function isStorageExist() /* boolean */ {
+function isStorageExist() {
   if (typeof (Storage) === undefined) {
     alert('Browser kamu tidak mendukung local storage');
     return false;
@@ -59,24 +53,17 @@ function isStorageExist() /* boolean */ {
   return true;
 }
 
-/**
- * Fungsi ini digunakan untuk menyimpan data ke localStorage
- * berdasarkan KEY yang sudah ditetapkan sebelumnya.
- */
+
 function saveData() {
   if (isStorageExist()) {
-    const parsed /* string */ = JSON.stringify(books);
+    const parsed = JSON.stringify(books);
     localStorage.setItem(STORAGE_KEY, parsed);
     document.dispatchEvent(new Event(SAVED_EVENT));
   }
 }
 
-/**
- * Fungsi ini digunakan untuk memuat data dari localStorage
- * Dan memasukkan data hasil parsing ke variabel {@see todos}
- */
 function loadDataFromStorage() {
-  const serializedData /* string */ = localStorage.getItem(STORAGE_KEY);
+  const serializedData = localStorage.getItem(STORAGE_KEY);
   let data = JSON.parse(serializedData);
 
   if (data !== null) {
@@ -149,16 +136,17 @@ function addBook() {
   const bookTitle = document.getElementById('inputBookTitle').value;
   const bookAuthor = document.getElementById('inputBookAuthor').value;
   const bookYear = document.getElementById('inputBookYear').value;
+  const isCompleted = document.getElementById('inputBookIsComplete').checked
 
   const generatedID = generateId();
-  const bookObject = generateBookObject(generatedID, bookTitle, bookAuthor, bookYear, false);
+  const bookObject = generateBookObject(generatedID, bookTitle, bookAuthor, bookYear, isCompleted);
   books.push(bookObject);
 
   document.dispatchEvent(new Event(RENDER_EVENT));
   saveData();
 }
 
-function moveBookToListCompleted(bookId /* HTMLELement */) {
+function moveBookToListCompleted(bookId) {
   const bookTarget = findBook(bookId);
 
   if (bookTarget == null) return;
@@ -171,7 +159,7 @@ function moveBookToListCompleted(bookId /* HTMLELement */) {
   saveData();
 }
 
-function removeBookFromCompleted(bookId /* HTMLELement */) {
+function removeBookFromCompleted(bookId) {
   const bookTarget = findBookIndex(bookId);
 
   if (bookTarget === -1) return;
@@ -179,9 +167,10 @@ function removeBookFromCompleted(bookId /* HTMLELement */) {
   books.splice(bookTarget, 1);
   document.dispatchEvent(new Event(RENDER_EVENT));
   saveData();
+  alert('Beneran mau dihapus?');
 }
 
-function moveBookToUncompletedBookList(bookId /* HTMLELement */) {
+function moveBookToUncompletedBookList(bookId) {
 
   const bookTarget = findBook(bookId);
   if (bookTarget == null) return;
@@ -196,7 +185,7 @@ function moveBookToUncompletedBookList(bookId /* HTMLELement */) {
 
 document.addEventListener('DOMContentLoaded', function () {
 
-  const submitForm /* HTMLFormElement */ = document.getElementById('inputBook');
+  const submitForm = document.getElementById('inputBook');
 
   submitForm.addEventListener('submit', function (event) {
     event.preventDefault();
@@ -216,7 +205,6 @@ document.addEventListener(RENDER_EVENT, function () {
   const uncompletedBookList = document.getElementById('incompleteBookshelfList');
   const listCompleted = document.getElementById('completeBookshelfList');
 
-  // clearing list item
   uncompletedBookList.innerHTML = '';
   listCompleted.innerHTML = '';
 
@@ -230,11 +218,15 @@ document.addEventListener(RENDER_EVENT, function () {
   }
 })
 
-
-function search() {
-  let input, filter, ul, li, a, i, txtValue;
-  input = document.getElementById('searchBookTitle');
-  filter = input.value.toUpperCase();
-  for (i=0; i < serializedData.length; i++) {
+const searchButton = document.getElementById('searchSubmit');
+searchButton.addEventListener('click', function (event) {
+  event.preventDefault();
+  const searchBook = document.getElementById('searchBookTitle').value.toLowerCase();
+  const daftar = document.querySelectorAll('.book_item > h3');
+    for (book of daftar) {
+  if (searchBook === book.innerText.toLowerCase()) {
+    book.parentElement.style.display ='block';
+  } else {
+    book.parent.Element.style.display = 'none';
   }
-}
+}})
